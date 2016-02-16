@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bms.tool.bmanalyzer.SPBMSSequenceView">
+   <children>
+      <ScrollPane fx:id="sequence" prefHeight="600.0" prefWidth="195.0" maxWidth="195.0" />
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <ComboBox fx:id="playside" onAction="#playsideChanged" prefHeight="28.0" prefWidth="95.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="option" onAction="#repaint" prefHeight="28.0" prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="PLAYSIDE" />
+            <Label text="HS" GridPane.rowIndex="1" />
+            <ComboBox fx:id="hispeed" prefHeight="28.0" prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="OPTION" GridPane.rowIndex="2" />
+            <Label text="KEY" GridPane.rowIndex="3" />
+            <TextField fx:id="keyorder" onAction="#randomChanged" prefHeight="28.0" prefWidth="55.0" text="1234567" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+   </children>
+</VBox>
