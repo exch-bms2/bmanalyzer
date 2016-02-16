@@ -23,6 +23,17 @@ public class BMSInformationLoader extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		String path = null;
+		int lntype = 0;
+		for (String s : getParameters().getNamed().keySet()) {
+			if(s.equals("lntype")) {
+				String value = getParameters().getNamed().get(s);
+				try {
+					lntype = Integer.parseInt(value);
+				} catch(NumberFormatException e) {
+					
+				}
+			}
+		}
 		for (String s : getParameters().getUnnamed()) {
 			File f = new File(s);
 			if (f.exists()) {
@@ -58,6 +69,7 @@ public class BMSInformationLoader extends Application {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 
+				bmsinfo.setLntype(lntype);
 				bmsinfo.update(path.replace("\\", "/"));
 				primaryStage.setTitle("譜面情報:"
 						+ bmsinfo.getModel().getFullTitle() + "[" + path

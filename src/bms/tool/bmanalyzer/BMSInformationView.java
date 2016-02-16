@@ -178,6 +178,14 @@ public class BMSInformationView implements Initializable {
 
 	private String directorypath;
 
+	public int getLntype() {
+		return lntype;
+	}
+
+	public void setLntype(int lntype) {
+		this.lntype = lntype;
+	}
+
 	public void update(String filepath) {
 		this.path = filepath;
 		filepath = filepath.replace("\\", "/");
