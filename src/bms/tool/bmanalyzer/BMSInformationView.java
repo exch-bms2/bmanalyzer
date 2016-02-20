@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import javafx.animation.AnimationTimer;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,11 +18,15 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
 import bms.model.*;
 
 /**
@@ -42,6 +47,8 @@ public class BMSInformationView implements Initializable {
 			"#aaaa00", "#00aa00", "#888888" };
 	public static final String[] DIFFICULTY_COLOR = { "#888888", "#00aa00",
 			"#0000aa", "#aaaa00", "#aa0000", "#aa00aa" };
+
+	private Stage stage;
 
 	@FXML
 	private Label title;
@@ -164,6 +171,10 @@ public class BMSInformationView implements Initializable {
 		pmssequenceController.setProperty(this);
 	}
 
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
 	public BMSModel getModel() {
 		return model;
 	}
@@ -175,8 +186,6 @@ public class BMSInformationView implements Initializable {
 	public double getPatternScale() {
 		return scale;
 	}
-
-	private String directorypath;
 
 	public int getLntype() {
 		return lntype;
@@ -197,7 +206,6 @@ public class BMSInformationView implements Initializable {
 			model = decoder.decode(new File(filepath));
 		}
 		// BMS格納ディレクトリ
-		directorypath = filepath.substring(0, filepath.lastIndexOf("/") + 1);
 		if (model.getRandom() > 1) {
 			List<Integer> arg0 = new ArrayList<Integer>();
 			for (int i = 1; i <= model.getRandom(); i++) {
@@ -209,6 +217,9 @@ public class BMSInformationView implements Initializable {
 		} else {
 			randomview.setVisible(false);
 		}
+		if (stage != null) {
+			stage.setTitle("譜面情報:" + model.getFullTitle() + "[" + path + "]");
+		}
 		update();
 	}
 
@@ -219,6 +230,7 @@ public class BMSInformationView implements Initializable {
 	 *            BMSファイルのパス
 	 */
 	public void update() {
+		String directorypath = path.substring(0, path.lastIndexOf("/") + 1);
 		File txtpath = new File(directorypath);
 		File[] txtFiles = txtpath.listFiles(getFileExtensionFilter(".txt"));
 
@@ -269,7 +281,7 @@ public class BMSInformationView implements Initializable {
 
 		// バナー画像
 		File bannerpath = new File(directorypath + model.getBanner());
-		if (bannerpath.exists() == true) {
+		if (model.getBanner().length() > 0 && bannerpath.exists()) {
 			Image bannerimg = new Image(bannerpath.toURI().toString());
 			banner.setImage(bannerimg);
 		} else {
@@ -511,6 +523,35 @@ public class BMSInformationView implements Initializable {
 
 	int getRegionTime() {
 		return model.getLastTime() / 1000 * 1000 + 2000;
+	}
+
+	public void onDragOver(DragEvent ev) {
+		Dragboard db = ev.getDragboard();
+		if (db.hasFiles()) {
+			ev.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+		}
+		ev.consume();
+	}
+
+	/**
+	 * ドラッグ＆ドロップ時の処理を行う
+	 * 
+	 * @param ev
+	 *            ドラッグ＆ドロップ時に発生したイベント
+	 */
+	public void fileDragDropped(final DragEvent ev) {
+		Dragboard db = ev.getDragboard();
+		if (db.hasFiles()) {
+			for (File f : db.getFiles()) {
+				String path = f.getPath().toLowerCase();
+				if (path.endsWith(".bmson") || path.endsWith(".bms")
+						|| path.endsWith(".bme") || path.endsWith(".bml")) {
+					update(f.getPath());
+					return;
+				}
+			}
+		}
+
 	}
 
 	private double[] getWeightNote(BMSModel model) {

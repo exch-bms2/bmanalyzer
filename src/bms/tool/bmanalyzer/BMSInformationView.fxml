@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="834.0" prefWidth="1095.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bms.tool.bmanalyzer.BMSInformationView">
+<HBox prefHeight="834.0" prefWidth="1095.0" onDragDropped="#fileDragDropped" onDragOver="#onDragOver" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bms.tool.bmanalyzer.BMSInformationView">
    <children>
       <VBox maxHeight="1.7976931348623157E308" prefHeight="881.0" prefWidth="750.0">
          <children>
@@ -142,7 +142,7 @@
                     </points>
                   </Polygon>
                   <Label fx:id="regionInfo" layoutX="120.0" layoutY="170.0" />
-                  <ToggleButton layoutY="170.0" mnemonicParsing="false" onAction="#autoplay" style="-fx-graphic: url(&quot;play.png&quot;);" text="" />
+                  <ToggleButton layoutY="170.0" mnemonicParsing="false" onAction="#autoplay" style="-fx-graphic: url(&quot;image/play.png&quot;);" text="" />
                </children>
                <VBox.margin>
                   <Insets bottom="50.0" left="20.0" />

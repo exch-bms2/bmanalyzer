@@ -60,6 +60,7 @@ public class BMSInformationLoader extends Application {
 								.getResource("/bms/tool/bmanalyzer/BMSInformationView.fxml"));
 				HBox stackPane = (HBox) loader.load();
 				bmsinfo = (BMSInformationView) loader.getController();
+				bmsinfo.setStage(primaryStage);
 //				scene.getStylesheets().addAll("/bms/res/win7glass.css",
 //						"/bms/res/style.css");
 //				primaryStage.getIcons().addAll(this.primaryStage.getIcons());
@@ -71,9 +72,6 @@ public class BMSInformationLoader extends Application {
 
 				bmsinfo.setLntype(lntype);
 				bmsinfo.update(path.replace("\\", "/"));
-				primaryStage.setTitle("譜面情報:"
-						+ bmsinfo.getModel().getFullTitle() + "[" + path
-						+ "]");
 
 			} catch (IOException e) {
 				Logger.getGlobal().severe(e.getMessage());
