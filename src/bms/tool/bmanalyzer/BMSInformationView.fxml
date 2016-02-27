@@ -9,182 +9,211 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="834.0" prefWidth="1095.0" onDragDropped="#fileDragDropped" onDragOver="#onDragOver" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bms.tool.bmanalyzer.BMSInformationView">
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bms.tool.bmanalyzer.BMSInformationView">
    <children>
-      <VBox maxHeight="1.7976931348623157E308" prefHeight="881.0" prefWidth="750.0">
+      <HBox prefHeight="11.0" prefWidth="1095.0">
          <children>
-            <HBox prefHeight="59.0" prefWidth="750.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#reload" text="リロード" />
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <ImageView fx:id="banner" fitHeight="111.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
-                  <VBox fx:id="randomview" prefHeight="28.0" prefWidth="100.0">
+            <Button mnemonicParsing="false" onAction="#reload" text="リロード" />
+         </children>
+      </HBox>
+      <TabPane>
+         <tabs>
+            <Tab closable="false" text="譜面情報">
+               <content>
+                  <HBox onDragDropped="#fileDragDropped" onDragOver="#onDragOver" prefHeight="834.0" prefWidth="1095.0">
                      <children>
-                        <Label text="譜面分岐あり" />
-                        <ComboBox fx:id="random" onAction="#randomChanged" prefHeight="28.0" prefWidth="75.0">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin></ComboBox>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="20.0" top="20.0" />
-               </VBox.margin>
-            </HBox>
-            <GridPane prefHeight="180.0" prefWidth="508.0" vgap="1.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="367.0" minWidth="10.0" prefWidth="139.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="712.0" minWidth="10.0" prefWidth="591.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label style="-fx-graphic: url(&quot;image/title.png&quot;);">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="title" text="Label" wrapText="true" GridPane.columnIndex="1" />
-                  <Label style="-fx-graphic: url(&quot;image/genre.png&quot;);" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label style="-fx-graphic: url(&quot;image/artist.png&quot;);" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label style="-fx-graphic: url(&quot;image/level.png&quot;);" GridPane.rowIndex="3">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label style="-fx-graphic: url(&quot;image/judge.png&quot;);" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label style="-fx-graphic: url(&quot;image/time.png&quot;);" GridPane.rowIndex="5">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label style="-fx-graphic: url(&quot;image/notes.png&quot;);" GridPane.rowIndex="6">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label style="-fx-graphic: url(&quot;image/total.png&quot;);" GridPane.rowIndex="7">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="genre" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="artist" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label fx:id="playlevel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label fx:id="judgerank" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label fx:id="playtime" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Label fx:id="totalnotes" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <Label fx:id="total" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <Label fx:id="comment" prefHeight="18.0" prefWidth="683.0" text="Label" GridPane.columnSpan="2" GridPane.rowIndex="8">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets left="20.0" />
-               </VBox.margin>
-            </GridPane>
-            <Pane maxWidth="700.0">
-               <children>
-                  <Canvas fx:id="graph" height="150.0" width="700.0">
-                     <VBox.margin>
-                        <Insets bottom="50.0" left="20.0" />
-                     </VBox.margin>
-                  </Canvas>
-                  <Polygon fx:id="graphCursor" fill="LIGHTGREEN" layoutX="700.0" layoutY="162.0" stroke="GREEN" strokeType="INSIDE">
-                    <points>
-                      <Double fx:value="-10.0" />
-                      <Double fx:value="8.0" />
-                      <Double fx:value="10.0" />
-                      <Double fx:value="8.0" />
-                      <Double fx:value="0.0" />
-                      <Double fx:value="-12.0" />
-                    </points>
-                  </Polygon>
-                  <Polygon fx:id="distCursor" fill="LIGHTBLUE" layoutX="700.0" layoutY="157.5" stroke="BLUE" strokeType="INSIDE">
-                    <points>
-                      <Double fx:value="-7.5" />
-                      <Double fx:value="6.0" />
-                      <Double fx:value="7.5" />
-                      <Double fx:value="6.0" />
-                      <Double fx:value="0.0" />
-                      <Double fx:value="-7.5" />
-                    </points>
-                  </Polygon>
-                  <Label fx:id="regionInfo" layoutX="120.0" layoutY="170.0" />
-                  <ToggleButton layoutY="170.0" mnemonicParsing="false" onAction="#autoplay" style="-fx-graphic: url(&quot;image/play.png&quot;);" text="" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="50.0" left="20.0" />
-               </VBox.margin>
-            </Pane>
-            <Pane prefHeight="151.0" prefWidth="750.0">
-               <children>
-                  <ScrollPane prefHeight="126.0" prefWidth="700.0" style="-fx-padding: 10px;">
-                     <content>
-                        <AnchorPane>
+                        <VBox maxHeight="1.7976931348623157E308" prefHeight="881.0" prefWidth="750.0">
                            <children>
-                              <Label fx:id="txt" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <HBox>
+                                 <children>
+                                    <ImageView fx:id="banner" fitHeight="111.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true">
+                  </ImageView>
+                                    <VBox fx:id="randomview" prefHeight="28.0" prefWidth="100.0">
+                                       <children>
+                                          <Label text="譜面分岐あり" />
+                                          <ComboBox fx:id="random" onAction="#randomChanged" prefHeight="28.0" prefWidth="75.0">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </ComboBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <GridPane prefHeight="180.0" prefWidth="508.0" vgap="1.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="367.0" minWidth="10.0" prefWidth="139.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="712.0" minWidth="10.0" prefWidth="591.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label style="-fx-graphic: url(&quot;image/title.png&quot;);">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="title" text="Label" wrapText="true" GridPane.columnIndex="1" />
+                                    <Label style="-fx-graphic: url(&quot;image/genre.png&quot;);" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-graphic: url(&quot;image/artist.png&quot;);" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-graphic: url(&quot;image/level.png&quot;);" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-graphic: url(&quot;image/judge.png&quot;);" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-graphic: url(&quot;image/time.png&quot;);" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-graphic: url(&quot;image/notes.png&quot;);" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-graphic: url(&quot;image/total.png&quot;);" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="genre" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="artist" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="playlevel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label fx:id="judgerank" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label fx:id="playtime" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label fx:id="totalnotes" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label fx:id="total" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <Label fx:id="comment" prefHeight="18.0" prefWidth="683.0" text="Label" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" />
+                                 </VBox.margin>
+                              </GridPane>
+                              <Pane maxWidth="700.0">
+                                 <children>
+                                    <Canvas fx:id="graph" height="150.0" width="700.0">
+                                       <VBox.margin>
+                                          <Insets bottom="50.0" left="20.0" />
+                                       </VBox.margin>
+                                    </Canvas>
+                                    <Polygon fx:id="graphCursor" fill="LIGHTGREEN" layoutX="700.0" layoutY="162.0" stroke="GREEN" strokeType="INSIDE">
+                                      <points>
+                                        <Double fx:value="-10.0" />
+                                        <Double fx:value="8.0" />
+                                        <Double fx:value="10.0" />
+                                        <Double fx:value="8.0" />
+                                        <Double fx:value="0.0" />
+                                        <Double fx:value="-12.0" />
+                                      </points>
+                                    </Polygon>
+                                    <Polygon fx:id="distCursor" fill="LIGHTBLUE" layoutX="700.0" layoutY="157.5" stroke="BLUE" strokeType="INSIDE">
+                                      <points>
+                                        <Double fx:value="-7.5" />
+                                        <Double fx:value="6.0" />
+                                        <Double fx:value="7.5" />
+                                        <Double fx:value="6.0" />
+                                        <Double fx:value="0.0" />
+                                        <Double fx:value="-7.5" />
+                                      </points>
+                                    </Polygon>
+                                    <Label fx:id="regionInfo" layoutX="120.0" layoutY="170.0" />
+                                    <ToggleButton layoutY="170.0" mnemonicParsing="false" onAction="#autoplay" style="-fx-graphic: url(&quot;image/play.png&quot;);" text="" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="50.0" left="20.0" />
+                                 </VBox.margin>
+                              </Pane>
+                              <Pane prefHeight="151.0" prefWidth="750.0">
+                                 <children>
+                                    <ScrollPane prefHeight="126.0" prefWidth="700.0" style="-fx-padding: 10px;">
+                                       <content>
+                                          <AnchorPane>
+                                             <children>
+                                                <Label fx:id="txt" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" />
+                                 </VBox.margin>
+                              </Pane>
+                              <HBox prefHeight="30.0" prefWidth="700.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="100.0" text="ノーツ間隔分布" />
+                                    <Canvas fx:id="notesduration" height="30.0" width="600.0">
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin>
+                                    </Canvas>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </VBox.margin>
+                              </HBox>
                            </children>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
-               </children>
-               <VBox.margin>
-                  <Insets left="20.0" />
-               </VBox.margin>
-            </Pane>
-            <HBox prefHeight="30.0" prefWidth="700.0">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="100.0" text="ノーツ間隔分布" />
-                  <Canvas fx:id="notesduration" height="30.0" width="600.0">
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </Canvas>
-               </children>
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-      <VBox fx:id="stack" prefHeight="150.0">
-         <children>
-            <fx:include fx:id="sequence" source="SPBMSSequenceView.fxml" />
-            <fx:include fx:id="dpsequence" source="DPBMSSequenceView.fxml" />
-            <fx:include fx:id="pmssequence" source="PMSSequenceView.fxml" />
-         </children>
-      </VBox>
+                        </VBox>
+                        <VBox fx:id="stack" prefHeight="150.0">
+                           <children>
+                              <fx:include fx:id="sequence" source="SPBMSSequenceView.fxml" />
+                              <fx:include fx:id="dpsequence" source="DPBMSSequenceView.fxml" />
+                              <fx:include fx:id="pmssequence" source="PMSSequenceView.fxml" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </Tab>
+            <Tab closable="false" text="メディア">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="選択" />
+                            <TableColumn prefWidth="250.0" text="ファイル" />
+                              <TableColumn prefWidth="400.0" text="内容" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
    </children>
-</HBox>
+</VBox>

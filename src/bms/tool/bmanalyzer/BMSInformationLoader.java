@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -58,7 +58,7 @@ public class BMSInformationLoader extends Application {
 				FXMLLoader loader = new FXMLLoader(
 						BMSInformationLoader.class
 								.getResource("/bms/tool/bmanalyzer/BMSInformationView.fxml"));
-				HBox stackPane = (HBox) loader.load();
+				VBox stackPane = (VBox) loader.load();
 				bmsinfo = (BMSInformationView) loader.getController();
 				bmsinfo.setStage(primaryStage);
 //				scene.getStylesheets().addAll("/bms/res/win7glass.css",

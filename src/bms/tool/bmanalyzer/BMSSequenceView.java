@@ -274,6 +274,8 @@ public abstract class BMSSequenceView {
 				// 小節線描画
 				if (tl.getSectionLine()) {
 					for (int p = 0; p < playerx.length; p++) {
+						this.strokeText(String.valueOf((int)tl.getSection()), playerx[p] * w + 60,
+								y - 2, Color.rgb(64, 64, 64), new Font(24));						
 						this.strokeLine(playerx[p] * w, y,
 								(playerx[p] + playerw[p]) * w, y, Color.GRAY);
 					}
