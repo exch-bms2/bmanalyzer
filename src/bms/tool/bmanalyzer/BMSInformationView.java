@@ -315,14 +315,14 @@ public class BMSInformationView implements Initializable {
 
 			n[5] = 0;
 			double bpm = -1.0;
-			for (int tl : model.getAllTimes()) {
-				if (tl >= j && tl < j + 1000) {
-					if (bpm != -1.0 && bpm != model.getTimeLine(tl).getBPM()) {
+			for (TimeLine tl : model.getAllTimeLines()) {
+				if (tl.getTime() >= j && tl.getTime() < j + 1000) {
+					if (bpm != -1.0 && bpm != tl.getBPM()) {
 						n[5] = 1;
 						break;
 					}
 				}
-				bpm = model.getTimeLine(tl).getBPM();
+				bpm = tl.getBPM();
 			}
 			notes.add(n);
 		}
@@ -554,70 +554,70 @@ public class BMSInformationView implements Initializable {
 
 	}
 
-	private double[] getWeightNote(BMSModel model) {
-		double[] d = new double[model.getLastTime() / 1000 + 1];
-		boolean timeweight = true;
-		double wt = 2.0;
-		double wr = 1.5;
-		double wk = 1.2;
-
-		double[][] w = { { wt, wr, wk, 1, 1, 1, 1, 2 },
-				{ wr, wt, wr, 1, 1, 1, 1, 2 }, { wk, wr, wt, 1, 1, 1, 1, 2 },
-				{ 1, 1, 1, wt, wr, wk, wk, 1 }, { 1, 1, 1, wr, wt, wr, wk, 1 },
-				{ 1, 1, 1, wk, wr, wt, wr, 1 }, { 1, 1, 1, wk, wk, wr, wt, 1 },
-				{ 2, 2, 2, 1, 1, 1, 1, 2 } };
-		int[] times = model.getAllTimes();
-		boolean[] ln = new boolean[8];
-		Arrays.fill(ln, false);
-		TimeLine prev = null;
-		int totalnotes = model.getTotalNotes();
-		int bordernotes = totalnotes
-				- (int) (totalnotes * 100 / model.getTotal());
-		int nownotes = 0;
-		for (int i = 0; i < times.length && times[i] <= model.getLastTime(); i++) {
-			TimeLine tl = model.getTimeLine(times[i]);
-			boolean existPrev = false;
-			nownotes += tl.getTotalNotes();
-			double last = ((timeweight && nownotes > bordernotes) ? (nownotes - bordernotes)
-					* 1.0 / (totalnotes - bordernotes) + 1.0
-					: 1.0);
-			for (int j = 0; j < 8; j++) {
-				if (tl.existNote(j)) {
-					existPrev = true;
-					double dd = 1.0;
-					if (prev != null) {
-						// 直前ノートからの重み処理
-						for (int k = 0; k < 8; k++) {
-							if (prev.existNote(k)) {
-								dd = dd < w[j][k] ? w[j][k] : dd;
-							}
-						}
-					}
-					// 皿隣接処理
-					if (j != 7 && tl.existNote(7) && w[7][j] > dd) {
-						dd = w[7][j];
-					}
-					// LN隣接処理
-					for (int k = 0; k < 8; k++) {
-						if (ln[k] && w[j][k] > 1) {
-							dd += 1;
-							break;
-						}
-					}
-					d[times[i] / 1000] += dd * last;
-				}
-			}
-			if (existPrev) {
-				prev = tl;
-			}
-			for (int j = 0; j < 8; j++) {
-				if (tl.existNote(j) && tl.getNote(j) instanceof LongNote) {
-					ln[j] = ln[j] ? false : true;
-				}
-			}
-		}
-		return d;
-	}
+//	private double[] getWeightNote(BMSModel model) {
+//		double[] d = new double[model.getLastTime() / 1000 + 1];
+//		boolean timeweight = true;
+//		double wt = 2.0;
+//		double wr = 1.5;
+//		double wk = 1.2;
+//
+//		double[][] w = { { wt, wr, wk, 1, 1, 1, 1, 2 },
+//				{ wr, wt, wr, 1, 1, 1, 1, 2 }, { wk, wr, wt, 1, 1, 1, 1, 2 },
+//				{ 1, 1, 1, wt, wr, wk, wk, 1 }, { 1, 1, 1, wr, wt, wr, wk, 1 },
+//				{ 1, 1, 1, wk, wr, wt, wr, 1 }, { 1, 1, 1, wk, wk, wr, wt, 1 },
+//				{ 2, 2, 2, 1, 1, 1, 1, 2 } };
+//		int[] times = model.getAllTimes();
+//		boolean[] ln = new boolean[8];
+//		Arrays.fill(ln, false);
+//		TimeLine prev = null;
+//		int totalnotes = model.getTotalNotes();
+//		int bordernotes = totalnotes
+//				- (int) (totalnotes * 100 / model.getTotal());
+//		int nownotes = 0;
+//		for (int i = 0; i < times.length && times[i] <= model.getLastTime(); i++) {
+//			TimeLine tl = model.getTimeLine(times[i]);
+//			boolean existPrev = false;
+//			nownotes += tl.getTotalNotes();
+//			double last = ((timeweight && nownotes > bordernotes) ? (nownotes - bordernotes)
+//					* 1.0 / (totalnotes - bordernotes) + 1.0
+//					: 1.0);
+//			for (int j = 0; j < 8; j++) {
+//				if (tl.existNote(j)) {
+//					existPrev = true;
+//					double dd = 1.0;
+//					if (prev != null) {
+//						// 直前ノートからの重み処理
+//						for (int k = 0; k < 8; k++) {
+//							if (prev.existNote(k)) {
+//								dd = dd < w[j][k] ? w[j][k] : dd;
+//							}
+//						}
+//					}
+//					// 皿隣接処理
+//					if (j != 7 && tl.existNote(7) && w[7][j] > dd) {
+//						dd = w[7][j];
+//					}
+//					// LN隣接処理
+//					for (int k = 0; k < 8; k++) {
+//						if (ln[k] && w[j][k] > 1) {
+//							dd += 1;
+//							break;
+//						}
+//					}
+//					d[times[i] / 1000] += dd * last;
+//				}
+//			}
+//			if (existPrev) {
+//				prev = tl;
+//			}
+//			for (int j = 0; j < 8; j++) {
+//				if (tl.existNote(j) && tl.getNote(j) instanceof LongNote) {
+//					ln[j] = ln[j] ? false : true;
+//				}
+//			}
+//		}
+//		return d;
+//	}
 
 	private AutoplayThread auto = null;
 

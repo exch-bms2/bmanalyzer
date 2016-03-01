@@ -245,7 +245,6 @@ public abstract class BMSSequenceView {
 		}
 		// 時間軸描画
 		this.fillRect(timex * w, 0, timew * w, h, Color.DARKGREEN);
-		int[] times = model.getAllTimes();
 		for (int i = 0; i < regiontime; i += 1000) {
 			double y = h - (i - starttime) * h / regiontime;
 			this.strokeLine(timex * w, y, (timex + timew) * w, y,
@@ -257,10 +256,9 @@ public abstract class BMSSequenceView {
 		}
 		int bpm = 0;
 		List<LongNote> scrlns = new ArrayList<LongNote>();
-		for (int i = 0; i < times.length; i++) {
-			if (starttime <= times[i] && times[i] <= starttime + regiontime) {
-				TimeLine tl = model.getTimeLine(times[i]);
-				double y = h - (times[i] - starttime) * h / regiontime;
+		for (TimeLine tl : model.getAllTimeLines()) {
+			if (starttime <= tl.getTime() && tl.getTime() <= starttime + regiontime) {
+				double y = h - (tl.getTime() - starttime) * h / regiontime;
 				// BPM変化描画
 				if ((int) tl.getBPM() != bpm) {
 					bpm = (int) tl.getBPM();
