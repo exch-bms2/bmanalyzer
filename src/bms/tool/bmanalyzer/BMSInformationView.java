@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javafx.animation.AnimationTimer;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
@@ -26,7 +33,10 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.util.Callback;
 import bms.model.*;
 
 /**
@@ -101,6 +111,14 @@ public class BMSInformationView implements Initializable {
 	private PMSSequenceView pmssequenceController;
 	@FXML
 	private Canvas notesduration;
+	
+	@FXML
+	private TableView<DecodeLog> logview;
+	@FXML
+	private TableColumn<DecodeLog, Integer> logstate;
+	@FXML
+	private TableColumn<DecodeLog, String> logmessage;
+	
 	/**
 	 * 表示中の譜面ビューア
 	 */
@@ -169,6 +187,39 @@ public class BMSInformationView implements Initializable {
 		sequenceController.setProperty(this);
 		dpsequenceController.setProperty(this);
 		pmssequenceController.setProperty(this);
+		
+		logstate.setCellValueFactory(new PropertyValueFactory<DecodeLog, Integer>(
+				"state"));
+		logstate.setCellFactory(new Callback<TableColumn<DecodeLog, Integer>, TableCell<DecodeLog, Integer>>() {
+			@Override
+			public TableCell<DecodeLog, Integer> call(
+					TableColumn<DecodeLog, Integer> arg0) {
+				return new TableCell<DecodeLog, Integer>() {
+					private final String[] state = { "default_row",
+							"failure_row", "success_row", "retry_row",
+							"empty_row" };
+
+					private final String[] text = { "", "警告", "重大" };
+
+					@Override
+					protected void updateItem(Integer arg0, boolean arg1) {
+						TableRow row = getTableRow();
+						row.getStyleClass().removeAll(state);
+						if (arg0 != null) {
+							setText(text[arg0]);
+							// ユーザー定義の譜面
+							row.getStyleClass().addAll(state[0],
+									state[arg0 + 1]);
+						} else {
+							setText("");
+							row.getStyleClass().addAll(state[4]);
+						}
+					}
+				};
+			}
+		});
+		logmessage.setCellValueFactory(new PropertyValueFactory<DecodeLog, String>(
+				"message"));
 	}
 
 	public void setStage(Stage stage) {
@@ -204,6 +255,7 @@ public class BMSInformationView implements Initializable {
 		} else {
 			BMSDecoder decoder = new BMSDecoder(lntype);
 			model = decoder.decode(new File(filepath));
+			logview.getItems().setAll(decoder.getDecodeLog());
 		}
 		// BMS格納ディレクトリ
 		if (model.getRandom() > 1) {
@@ -517,6 +569,18 @@ public class BMSInformationView implements Initializable {
 		update();
 	}
 
+	public void open() {
+		FileChooser chooser = new FileChooser();
+		chooser.getExtensionFilters().setAll(
+				new ExtensionFilter("Be Music Script File", "*.bms",
+						"*.bme", "*.bml", "*.pms", "*.bmson"));
+		chooser.setTitle("開く : BMSファイルを指定してください");
+		File f = chooser.showOpenDialog(null);
+		if (f != null) {
+			update(f.getAbsolutePath());
+		}
+	}
+	
 	public void reload() {
 		update(path);
 	}

@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class BMSInformationLoader extends Application {
@@ -70,6 +73,16 @@ public class BMSInformationLoader extends Application {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 
+				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+					@Override
+					public void handle(WindowEvent t) {
+						Logger.getGlobal().info("BMAnalyzerを終了します");
+						Platform.exit();
+						System.exit(0);
+					}
+				});
+
 				bmsinfo.setLntype(lntype);
 				bmsinfo.update(path.replace("\\", "/"));
 
@@ -77,6 +90,9 @@ public class BMSInformationLoader extends Application {
 				Logger.getGlobal().severe(e.getMessage());
 				e.printStackTrace();
 			}			
+		} else {
+			Platform.exit();
+			System.exit(0);			
 		}
 	}
 
