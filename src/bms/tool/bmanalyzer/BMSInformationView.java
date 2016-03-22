@@ -3,33 +3,20 @@ package bms.tool.bmanalyzer;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Logger;
 
 import javafx.animation.AnimationTimer;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -51,12 +38,9 @@ public class BMSInformationView implements Initializable {
 	/**
 	 * JUDGERANK表示用文字列
 	 */
-	public static final String[] JUDGERANK = { "VERYHARD", "HARD", "NORMAL",
-			"EASY", "---" };
-	public static final String[] JUDGERANK_COLOR = { "#aa0000", "#aa5500",
-			"#aaaa00", "#00aa00", "#888888" };
-	public static final String[] DIFFICULTY_COLOR = { "#888888", "#00aa00",
-			"#0000aa", "#aaaa00", "#aa0000", "#aa00aa" };
+	public static final String[] JUDGERANK = { "VERYHARD", "HARD", "NORMAL", "EASY", "---" };
+	public static final String[] JUDGERANK_COLOR = { "#aa0000", "#aa5500", "#aaaa00", "#00aa00", "#888888" };
+	public static final String[] DIFFICULTY_COLOR = { "#888888", "#00aa00", "#0000aa", "#aaaa00", "#aa0000", "#aa00aa" };
 
 	private Stage stage;
 
@@ -111,14 +95,14 @@ public class BMSInformationView implements Initializable {
 	private PMSSequenceView pmssequenceController;
 	@FXML
 	private Canvas notesduration;
-	
+
 	@FXML
 	private TableView<DecodeLog> logview;
 	@FXML
 	private TableColumn<DecodeLog, Integer> logstate;
 	@FXML
 	private TableColumn<DecodeLog, String> logmessage;
-	
+
 	/**
 	 * 表示中の譜面ビューア
 	 */
@@ -140,8 +124,8 @@ public class BMSInformationView implements Initializable {
 	/**
 	 * 譜面密度分布の描画色
 	 */
-	private static final Color[] colors = new Color[] { Color.rgb(70, 255, 0),
-			Color.RED, Color.rgb(128, 128, 255), Color.WHITE, Color.DARKRED };
+	private static final Color[] colors = new Color[] { Color.rgb(70, 255, 0), Color.RED, Color.rgb(128, 128, 255),
+			Color.WHITE, Color.DARKRED };
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// CSS適用
@@ -152,14 +136,11 @@ public class BMSInformationView implements Initializable {
 		graph.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				// 左クリック時に指定位置まで譜面スクロール
-				if (event.getButton() == MouseButton.PRIMARY
-						&& event.getClickCount() == 1 && selected != null) {
-					selected.setViewCursor((long) ((event.getX() / graph
-							.getWidth()) * getRegionTime()));
+				if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1 && selected != null) {
+					selected.setViewCursor((long) ((event.getX() / graph.getWidth()) * getRegionTime()));
 				}
 				// 右クリック時
-				if (event.getButton() == MouseButton.SECONDARY
-						&& event.getClickCount() == 1 && selected != null) {
+				if (event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1 && selected != null) {
 					if (event.getX() > graphCursor.getLayoutX()) {
 						distCursor.setLayoutX(event.getX());
 						sequenceViewChanged();
@@ -187,16 +168,13 @@ public class BMSInformationView implements Initializable {
 		sequenceController.setProperty(this);
 		dpsequenceController.setProperty(this);
 		pmssequenceController.setProperty(this);
-		
-		logstate.setCellValueFactory(new PropertyValueFactory<DecodeLog, Integer>(
-				"state"));
+
+		logstate.setCellValueFactory(new PropertyValueFactory<DecodeLog, Integer>("state"));
 		logstate.setCellFactory(new Callback<TableColumn<DecodeLog, Integer>, TableCell<DecodeLog, Integer>>() {
 			@Override
-			public TableCell<DecodeLog, Integer> call(
-					TableColumn<DecodeLog, Integer> arg0) {
+			public TableCell<DecodeLog, Integer> call(TableColumn<DecodeLog, Integer> arg0) {
 				return new TableCell<DecodeLog, Integer>() {
-					private final String[] state = { "default_row",
-							"failure_row", "success_row", "retry_row",
+					private final String[] state = { "default_row", "failure_row", "success_row", "retry_row",
 							"empty_row" };
 
 					private final String[] text = { "", "警告", "重大" };
@@ -208,8 +186,7 @@ public class BMSInformationView implements Initializable {
 						if (arg0 != null) {
 							setText(text[arg0]);
 							// ユーザー定義の譜面
-							row.getStyleClass().addAll(state[0],
-									state[arg0 + 1]);
+							row.getStyleClass().addAll(state[0], state[arg0 + 1]);
 						} else {
 							setText("");
 							row.getStyleClass().addAll(state[4]);
@@ -218,8 +195,7 @@ public class BMSInformationView implements Initializable {
 				};
 			}
 		});
-		logmessage.setCellValueFactory(new PropertyValueFactory<DecodeLog, String>(
-				"message"));
+		logmessage.setCellValueFactory(new PropertyValueFactory<DecodeLog, String>("message"));
 	}
 
 	public void setStage(Stage stage) {
@@ -246,16 +222,21 @@ public class BMSInformationView implements Initializable {
 		this.lntype = lntype;
 	}
 
+	boolean bmson = false;
+	double dtotal;
+
 	public void update(String filepath) {
 		this.path = filepath;
 		filepath = filepath.replace("\\", "/");
 		if (filepath.toLowerCase().endsWith(".bmson")) {
 			BMSONDecoder decoder = new BMSONDecoder(lntype);
 			model = decoder.decode(new File(filepath));
+			bmson = true;
 		} else {
 			BMSDecoder decoder = new BMSDecoder(lntype);
 			model = decoder.decode(new File(filepath));
 			logview.getItems().setAll(decoder.getDecodeLog());
+			bmson = false;
 		}
 		// BMS格納ディレクトリ
 		if (model.getRandom() > 1) {
@@ -294,10 +275,8 @@ public class BMSInformationView implements Initializable {
 				String str = null;
 				try {
 					// 読み込み準備
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(new FileInputStream(
-									directorypath + txtFiles[i].getName()),
-									"MS932"));
+					BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(directorypath
+							+ txtFiles[i].getName()), "MS932"));
 					// 一行づつ読み込み
 					while ((str = br.readLine()) != null) {
 						// 文字列追加
@@ -323,11 +302,14 @@ public class BMSInformationView implements Initializable {
 		genre.setPrefWidth(600);
 		genre.setText(model.getGenre());
 		playlevel.setText(String.valueOf(model.getPlaylevel()));
-		playlevel.setStyle("-fx-text-fill:"
-				+ DIFFICULTY_COLOR[model.getDifficulty()]);
-		judgerank.setText(JUDGERANK[model.getJudgerank()]);
-		judgerank.setStyle("-fx-text-fill:"
-				+ JUDGERANK_COLOR[model.getJudgerank()]);
+		playlevel.setStyle("-fx-text-fill:" + DIFFICULTY_COLOR[model.getDifficulty()]);
+		if (bmson) {
+			judgerank.setText(model.getJudgerank() + "%");
+			judgerank.setStyle("-fx-text-fill:" + "#444444");
+		} else {
+			judgerank.setText(JUDGERANK[model.getJudgerank()]);
+			judgerank.setStyle("-fx-text-fill:" + JUDGERANK_COLOR[model.getJudgerank()]);
+		}
 		int time = model.getLastTime() / 1000;
 		playtime.setText(String.format("%d:%02d", time / 60, time % 60));
 
@@ -351,12 +333,9 @@ public class BMSInformationView implements Initializable {
 			int[] n = new int[6];
 
 			n[0] = model.getTotalNotes(j, j + 1000, BMSModel.TOTALNOTES_KEY);
-			n[1] = model.getTotalNotes(j, j + 1000,
-					BMSModel.TOTALNOTES_LONG_KEY);
-			n[2] = model
-					.getTotalNotes(j, j + 1000, BMSModel.TOTALNOTES_SCRATCH);
-			n[3] = model.getTotalNotes(j, j + 1000,
-					BMSModel.TOTALNOTES_LONG_SCRATCH);
+			n[1] = model.getTotalNotes(j, j + 1000, BMSModel.TOTALNOTES_LONG_KEY);
+			n[2] = model.getTotalNotes(j, j + 1000, BMSModel.TOTALNOTES_SCRATCH);
+			n[3] = model.getTotalNotes(j, j + 1000, BMSModel.TOTALNOTES_LONG_SCRATCH);
 			n[4] = model.getTotalNotes(j, j + 1000, BMSModel.TOTALNOTES_MINE);
 
 			tn[0] += n[0];
@@ -383,31 +362,33 @@ public class BMSInformationView implements Initializable {
 		int totalval = (int) (7.605 * totalnotes / (0.01 * totalnotes + 6.5));
 		totalval = (totalval > 260) ? totalval : 260;
 		if (model.getTotal() > 0 && totalnotes > 0) {
-			total.setText(String.valueOf(model.getTotal()) + " (ゲージ増加量: +"
-					+ (((int) model.getTotal() * 100 / totalnotes) / 100.0)
-					+ "%/Notes" + ", 本家推定TOTAL:" + totalval + " -  "
-					+ (int) (model.getTotal() * 100 / totalval) + "%)");
+			if (bmson) {
+				dtotal = model.getTotal() * totalval / 100 / totalnotes;
+				total.setText(String.valueOf(model.getTotal()) + "% (ゲージ増加量: +" + ((int) (dtotal * 100) / 100.0)
+						+ "%/Notes");
+			} else {
+				dtotal = model.getTotal() / totalnotes;
+				total.setText(String.valueOf(model.getTotal()) + " (ゲージ増加量: +" + ((int) (dtotal * 100) / 100.0)
+						+ "%/Notes" + ", 本家推定TOTAL:" + totalval + " -  " + (int) (model.getTotal() * 100 / totalval)
+						+ "%)");
+			}
 		} else {
 			total.setText("未定義");
 		}
-		String s = totalnotes + " (平均密度:"
-				+ Math.round(totalnotes * 100.0 / time) / 100.0 + "Notes/s , ";
+		String s = totalnotes + " (平均密度:" + Math.round(totalnotes * 100.0 / time) / 100.0 + "Notes/s , ";
 		if (model.getUseKeys() == 9) {
 			s += "通常:" + tn[0] + " LN:" + tn[1] + ")";
 		} else {
-			s += "通常:" + tn[0] + " LN:" + tn[1] + " 皿:" + tn[2] + " LN皿:"
-					+ tn[3] + ")";
+			s += "通常:" + tn[0] + " LN:" + tn[1] + " 皿:" + tn[2] + " LN皿:" + tn[3] + ")";
 		}
 		if (tn[4] > 0) {
 			s += " ※地雷ノート:" + tn[4];
 		}
 		this.totalnotes.setText(s);
 		// その他情報
-		comment.setText((model.getTotal() > 0 ? ("許容POOR数目安(EASY / NORMAL / HARD(1POOR10%減少)):"
-				+ Math.round((model.getTotal() * 1.2 - 60) / 4.8)
-				+ " / "
-				+ Math.round((model.getTotal() - 60) / 6) + " / " + (70 / 10 + (totalnotes / 10 + 30) / 6))
-				: ""));
+		comment.setText((dtotal > 0 ? ("許容POOR数目安(EASY / NORMAL / HARD(1POOR10%減少)):"
+				+ Math.round((dtotal * totalnotes * 1.2 - 60) / 4.8) + " / "
+				+ Math.round((dtotal * totalnotes - 60) / 6) + " / " + (70 / 10 + (totalnotes / 10 + 30) / 6)) : ""));
 
 		this.drawGraph(notes);
 		// BMSの種類に応じて譜面ビューアの切り替え
@@ -437,7 +418,8 @@ public class BMSInformationView implements Initializable {
 		int[] notetimes = new int[18];
 		for (TimeLine tl : model.getAllTimeLines()) {
 			for (int lane = 0; lane < 18; lane++) {
-				if (tl.existNote(lane)) {
+				Note n = tl.getNote(lane);
+				if (n != null && !(n instanceof MineNote) && !(n instanceof LongNote && ((LongNote) n).getEnd() == tl)) {
 					l.add(tl.getTime() - notetimes[lane]);
 					notetimes[lane] = tl.getTime();
 				}
@@ -449,17 +431,13 @@ public class BMSInformationView implements Initializable {
 		int index = 0;
 		final int[] judge = { 120, 310, 630, 10000000 };
 		for (int i = 0; i < noted.length; i++) {
-			gc.setFill(Color
-					.hsb(240.0 * ((noted[i] > 1000 ? 1000 : noted[i]) / 1000.0) - 33,
-							1.0, 1.0));
-			gc.fillRect(notesduration.getWidth() * i / noted.length, 0,
-					notesduration.getWidth() / noted.length,
+			gc.setFill(Color.hsb(240.0 * ((noted[i] > 1000 ? 1000 : noted[i]) / 1000.0) - 33, 1.0, 1.0));
+			gc.fillRect(notesduration.getWidth() * i / noted.length, 0, notesduration.getWidth() / noted.length,
 					notesduration.getHeight());
 			if (judge[index] < noted[i]) {
 				gc.setStroke(Color.BLACK);
-				gc.strokeLine(notesduration.getWidth() * i / noted.length, 0,
-						notesduration.getWidth() * i / noted.length,
-						notesduration.getHeight());
+				gc.strokeLine(notesduration.getWidth() * i / noted.length, 0, notesduration.getWidth() * i
+						/ noted.length, notesduration.getHeight());
 				index++;
 			}
 		}
@@ -508,18 +486,15 @@ public class BMSInformationView implements Initializable {
 			// x軸補助線描画
 			if (i % 30 == 0) {
 				gc.setStroke(Color.rgb(96, 96, 96));
-				gc.strokeLine(x + i * w / data.size(), y,
-						x + i * w / data.size(), y + h);
+				gc.strokeLine(x + i * w / data.size(), y, x + i * w / data.size(), y + h);
 			}
 
-			for (int j = 0, k = n[order[0]], index = 0; j < max
-					&& index < colors.length;) {
+			for (int j = 0, k = n[order[0]], index = 0; j < max && index < colors.length;) {
 				if (k > 0) {
 					k--;
 					j++;
 					gc.setFill(colors[index]);
-					gc.fillRect(w * i / data.size(), h - j * (h / max), w
-							/ data.size() - 1, (h / max) - 1);
+					gc.fillRect(w * i / data.size(), h - j * (h / max), w / data.size() - 1, (h / max) - 1);
 				} else {
 					index++;
 					k = n[order[index]];
@@ -530,8 +505,7 @@ public class BMSInformationView implements Initializable {
 
 	public void sequenceViewChanged() {
 		int time = this.getRegionTime();
-		graphCursor.setLayoutX(graph.getWidth() * selected.getViewCursor()
-				/ time);
+		graphCursor.setLayoutX(graph.getWidth() * selected.getViewCursor() / time);
 		if (distCursor.getLayoutX() < graphCursor.getLayoutX()) {
 			distCursor.setLayoutX(graphCursor.getLayoutX());
 		}
@@ -539,25 +513,18 @@ public class BMSInformationView implements Initializable {
 		int dsttime = (int) (distCursor.getLayoutX() / graph.getWidth() * time);
 		int notes = model.getTotalNotes(srctime, dsttime);
 		if (auto == null) {
-			if (distCursor.getLayoutX() > graphCursor.getLayoutX() + 10
-					&& model.getTotalNotes() > 0) {
+			if (distCursor.getLayoutX() > graphCursor.getLayoutX() + 10 && model.getTotalNotes() > 0) {
 				regionInfo.setText("選択範囲:"
-						+ String.format("%d:%02d.%03d", srctime / 60000,
-								(srctime / 1000) % 60, srctime % 1000)
+						+ String.format("%d:%02d.%03d", srctime / 60000, (srctime / 1000) % 60, srctime % 1000)
 						+ "〜"
-						+ String.format("%d:%02d.%03d", dsttime / 60000,
-								(dsttime / 1000) % 60, dsttime % 1000)
+						+ String.format("%d:%02d.%03d", dsttime / 60000, (dsttime / 1000) % 60, dsttime % 1000)
 						+ "  ノート数:"
 						+ notes
 						+ ", 平均密度:"
 						+ ((int) (notes
-								/ ((distCursor.getLayoutX() - graphCursor
-										.getLayoutX()) * time / 1000 / graph
-											.getWidth()) * 10) / 10.0)
-						+ "Notes/s, "
-						+ " ゲージ増加量: +"
-						+ ((notes * (int) model.getTotal() * 100 / model
-								.getTotalNotes()) / 100.0) + "%)");
+								/ ((distCursor.getLayoutX() - graphCursor.getLayoutX()) * time / 1000 / graph
+										.getWidth()) * 10) / 10.0) + "Notes/s, " + " ゲージ増加量: +"
+						+ ((int) (notes * dtotal * 100) / 100.0) + "%)");
 			} else {
 				regionInfo.setText("");
 			}
@@ -572,15 +539,14 @@ public class BMSInformationView implements Initializable {
 	public void open() {
 		FileChooser chooser = new FileChooser();
 		chooser.getExtensionFilters().setAll(
-				new ExtensionFilter("Be Music Script File", "*.bms",
-						"*.bme", "*.bml", "*.pms", "*.bmson"));
+				new ExtensionFilter("Be Music Script File", "*.bms", "*.bme", "*.bml", "*.pms", "*.bmson"));
 		chooser.setTitle("開く : BMSファイルを指定してください");
 		File f = chooser.showOpenDialog(null);
 		if (f != null) {
 			update(f.getAbsolutePath());
 		}
 	}
-	
+
 	public void reload() {
 		update(path);
 	}
@@ -608,8 +574,7 @@ public class BMSInformationView implements Initializable {
 		if (db.hasFiles()) {
 			for (File f : db.getFiles()) {
 				String path = f.getPath().toLowerCase();
-				if (path.endsWith(".bmson") || path.endsWith(".bms")
-						|| path.endsWith(".bme") || path.endsWith(".bml")) {
+				if (path.endsWith(".bmson") || path.endsWith(".bms") || path.endsWith(".bme") || path.endsWith(".bml")) {
 					update(f.getPath());
 					return;
 				}
@@ -618,70 +583,72 @@ public class BMSInformationView implements Initializable {
 
 	}
 
-//	private double[] getWeightNote(BMSModel model) {
-//		double[] d = new double[model.getLastTime() / 1000 + 1];
-//		boolean timeweight = true;
-//		double wt = 2.0;
-//		double wr = 1.5;
-//		double wk = 1.2;
-//
-//		double[][] w = { { wt, wr, wk, 1, 1, 1, 1, 2 },
-//				{ wr, wt, wr, 1, 1, 1, 1, 2 }, { wk, wr, wt, 1, 1, 1, 1, 2 },
-//				{ 1, 1, 1, wt, wr, wk, wk, 1 }, { 1, 1, 1, wr, wt, wr, wk, 1 },
-//				{ 1, 1, 1, wk, wr, wt, wr, 1 }, { 1, 1, 1, wk, wk, wr, wt, 1 },
-//				{ 2, 2, 2, 1, 1, 1, 1, 2 } };
-//		int[] times = model.getAllTimes();
-//		boolean[] ln = new boolean[8];
-//		Arrays.fill(ln, false);
-//		TimeLine prev = null;
-//		int totalnotes = model.getTotalNotes();
-//		int bordernotes = totalnotes
-//				- (int) (totalnotes * 100 / model.getTotal());
-//		int nownotes = 0;
-//		for (int i = 0; i < times.length && times[i] <= model.getLastTime(); i++) {
-//			TimeLine tl = model.getTimeLine(times[i]);
-//			boolean existPrev = false;
-//			nownotes += tl.getTotalNotes();
-//			double last = ((timeweight && nownotes > bordernotes) ? (nownotes - bordernotes)
-//					* 1.0 / (totalnotes - bordernotes) + 1.0
-//					: 1.0);
-//			for (int j = 0; j < 8; j++) {
-//				if (tl.existNote(j)) {
-//					existPrev = true;
-//					double dd = 1.0;
-//					if (prev != null) {
-//						// 直前ノートからの重み処理
-//						for (int k = 0; k < 8; k++) {
-//							if (prev.existNote(k)) {
-//								dd = dd < w[j][k] ? w[j][k] : dd;
-//							}
-//						}
-//					}
-//					// 皿隣接処理
-//					if (j != 7 && tl.existNote(7) && w[7][j] > dd) {
-//						dd = w[7][j];
-//					}
-//					// LN隣接処理
-//					for (int k = 0; k < 8; k++) {
-//						if (ln[k] && w[j][k] > 1) {
-//							dd += 1;
-//							break;
-//						}
-//					}
-//					d[times[i] / 1000] += dd * last;
-//				}
-//			}
-//			if (existPrev) {
-//				prev = tl;
-//			}
-//			for (int j = 0; j < 8; j++) {
-//				if (tl.existNote(j) && tl.getNote(j) instanceof LongNote) {
-//					ln[j] = ln[j] ? false : true;
-//				}
-//			}
-//		}
-//		return d;
-//	}
+	// private double[] getWeightNote(BMSModel model) {
+	// double[] d = new double[model.getLastTime() / 1000 + 1];
+	// boolean timeweight = true;
+	// double wt = 2.0;
+	// double wr = 1.5;
+	// double wk = 1.2;
+	//
+	// double[][] w = { { wt, wr, wk, 1, 1, 1, 1, 2 },
+	// { wr, wt, wr, 1, 1, 1, 1, 2 }, { wk, wr, wt, 1, 1, 1, 1, 2 },
+	// { 1, 1, 1, wt, wr, wk, wk, 1 }, { 1, 1, 1, wr, wt, wr, wk, 1 },
+	// { 1, 1, 1, wk, wr, wt, wr, 1 }, { 1, 1, 1, wk, wk, wr, wt, 1 },
+	// { 2, 2, 2, 1, 1, 1, 1, 2 } };
+	// int[] times = model.getAllTimes();
+	// boolean[] ln = new boolean[8];
+	// Arrays.fill(ln, false);
+	// TimeLine prev = null;
+	// int totalnotes = model.getTotalNotes();
+	// int bordernotes = totalnotes
+	// - (int) (totalnotes * 100 / model.getTotal());
+	// int nownotes = 0;
+	// for (int i = 0; i < times.length && times[i] <= model.getLastTime(); i++)
+	// {
+	// TimeLine tl = model.getTimeLine(times[i]);
+	// boolean existPrev = false;
+	// nownotes += tl.getTotalNotes();
+	// double last = ((timeweight && nownotes > bordernotes) ? (nownotes -
+	// bordernotes)
+	// * 1.0 / (totalnotes - bordernotes) + 1.0
+	// : 1.0);
+	// for (int j = 0; j < 8; j++) {
+	// if (tl.existNote(j)) {
+	// existPrev = true;
+	// double dd = 1.0;
+	// if (prev != null) {
+	// // 直前ノートからの重み処理
+	// for (int k = 0; k < 8; k++) {
+	// if (prev.existNote(k)) {
+	// dd = dd < w[j][k] ? w[j][k] : dd;
+	// }
+	// }
+	// }
+	// // 皿隣接処理
+	// if (j != 7 && tl.existNote(7) && w[7][j] > dd) {
+	// dd = w[7][j];
+	// }
+	// // LN隣接処理
+	// for (int k = 0; k < 8; k++) {
+	// if (ln[k] && w[j][k] > 1) {
+	// dd += 1;
+	// break;
+	// }
+	// }
+	// d[times[i] / 1000] += dd * last;
+	// }
+	// }
+	// if (existPrev) {
+	// prev = tl;
+	// }
+	// for (int j = 0; j < 8; j++) {
+	// if (tl.existNote(j) && tl.getNote(j) instanceof LongNote) {
+	// ln[j] = ln[j] ? false : true;
+	// }
+	// }
+	// }
+	// return d;
+	// }
 
 	private AutoplayThread auto = null;
 
@@ -705,8 +672,7 @@ public class BMSInformationView implements Initializable {
 		@Override
 		public void handle(long now) {
 			if (time != 0) {
-				selected.setViewCursor(selected.getViewCursor() + (now - time)
-						/ 1000000);
+				selected.setViewCursor(selected.getViewCursor() + (now - time) / 1000000);
 			}
 			time = now;
 		}
